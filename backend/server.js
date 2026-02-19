@@ -1,26 +1,29 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import cors from "cors";
 
-const authRoutes = require("./routes/authRoutes");
-const bookRoutes = require("./routes/bookRoutes");
-const userRoutes = require("./routes/userRoutes");
-const issueRoutes = require("./routes/issueRoutes");
+import authRoutes from "./routes/authRoutes.js";
+import bookRoutes from "./routes/bookRoutes.js";
+import issueRoutes from "./routes/issueRoutes.js";
+import reportRoutes from "./routes/reportRoutes.js";
+
+dotenv.config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect("mongodb://127.0.0.1:27017/libraryDB")
-.then(() => console.log("Database Connected"))
-.catch(err => console.log(err));
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log(err));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/books", bookRoutes);
-app.use("/api/users", userRoutes);
 app.use("/api/issues", issueRoutes);
+app.use("/api/reports", reportRoutes);
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
-});
+app.listen(process.env.PORT, () =>
+  console.log(`Server running on port ${process.env.PORT}`)
+);
