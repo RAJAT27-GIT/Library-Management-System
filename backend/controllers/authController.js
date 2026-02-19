@@ -1,42 +1,56 @@
-import Admin from "../models/Admin.js";
-import User from "../models/User.js";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+const Admin = require("../models/Admin");
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
-  });
+  return jwt.sign(
+    { id },
+    process.env.JWT_SECRET,
+    { expiresIn: "7d" }
+  );
 };
 
-export const adminLogin = async (req, res) => {
-  const { email, password } = req.body;
+const adminLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ email });
 
-  if (admin && await bcrypt.compare(password, admin.password)) {
-    res.json({
-      _id: admin._id,
-      email: admin.email,
-      token: generateToken(admin._id),
-    });
-  } else {
-    res.status(401).json({ message: "Invalid credentials" });
+    if (admin && await bcrypt.compare(password, admin.password)) {
+      res.json({
+        _id: admin._id,
+        email: admin.email,
+        token: generateToken(admin._id),
+      });
+    } else {
+      res.status(401).json({ message: "Invalid credentials" });
+    }
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-export const userLogin = async (req, res) => {
-  const { email, password } = req.body;
+const userLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+    const user = await User.findOne({ email });
 
-  if (user && await bcrypt.compare(password, user.password)) {
-    res.json({
-      _id: user._id,
-      email: user.email,
-      token: generateToken(user._id),
-    });
-  } else {
-    res.status(401).json({ message: "Invalid credentials" });
+    if (user && await bcrypt.compare(password, user.password)) {
+      res.json({
+        _id: user._id,
+        email: user.email,
+        token: generateToken(user._id),
+      });
+    } else {
+      res.status(401).json({ message: "Invalid credentials" });
+    }
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
+
+module.exports = { adminLogin, userLogin };

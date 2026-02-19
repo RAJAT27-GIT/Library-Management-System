@@ -1,17 +1,24 @@
-import Book from "../models/Book.js";
-import User from "../models/User.js";
-import Issue from "../models/Issue.js";
+const Book = require("../models/Book");
+const User = require("../models/User");
+const Issue = require("../models/Issue");
 
-export const getReports = async (req, res) => {
-  const totalBooks = await Book.countDocuments();
-  const totalUsers = await User.countDocuments();
-  const totalIssues = await Issue.countDocuments();
-  const activeIssues = await Issue.countDocuments({ returnDate: null });
+const getReports = async (req, res) => {
+  try {
+    const totalBooks = await Book.countDocuments();
+    const totalUsers = await User.countDocuments();
+    const totalIssues = await Issue.countDocuments();
+    const activeIssues = await Issue.countDocuments({ status: "Issued" });
 
-  res.json({
-    totalBooks,
-    totalUsers,
-    totalIssues,
-    activeIssues,
-  });
+    res.json({
+      totalBooks,
+      totalUsers,
+      totalIssues,
+      activeIssues,
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
+
+module.exports = { getReports };

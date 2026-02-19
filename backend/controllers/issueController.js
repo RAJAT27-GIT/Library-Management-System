@@ -1,22 +1,36 @@
-import Issue from "../models/Issue.js";
+const Issue = require("../models/Issue");
 
-export const getActiveIssues = async (req, res) => {
-  const issues = await Issue.find({ returnDate: null })
-    .populate("userId")
-    .populate("bookId");
+const getActiveIssues = async (req, res) => {
+  try {
+    const issues = await Issue.find({ status: "Issued" })
+      .populate("userId")
+      .populate("bookId");
 
-  res.json(issues);
+    res.json(issues);
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
-export const getOverdueIssues = async (req, res) => {
-  const today = new Date();
+const getOverdueIssues = async (req, res) => {
+  try {
+    const issues = await Issue.find({ status: "Issued" })
+      .populate("userId")
+      .populate("bookId");
 
-  const issues = await Issue.find({
-    dueDate: { $lt: today },
-    returnDate: null,
-  })
-    .populate("userId")
-    .populate("bookId");
+    const overdue = issues.filter(issue => {
+      const diffDays = Math.floor(
+        (new Date() - issue.issueDate) / (1000 * 60 * 60 * 24)
+      );
+      return diffDays > 7;
+    });
 
-  res.json(issues);
+    res.json(overdue);
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
+
+module.exports = { getActiveIssues, getOverdueIssues };
