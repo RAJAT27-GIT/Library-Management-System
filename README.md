@@ -1,28 +1,38 @@
-# Library Management System
+# 📚 Library Management System (MERN)
 
-## Tech Stack
-- MongoDB
-- Express
-- React
-- Node.js
+A full-stack Library Management application built to streamline book inventory, user memberships, and administrative reporting.
 
-## Features
-- Admin Login
-- User Login
-- Add / Update Books
-- Issue & Return Books
-- Fine Calculation
-- Reports
-- Active & Overdue Issues
-- Membership Handling
+## 🚀 Key Features
 
-## How to Run
-Backend:
-cd backend
-npm install
-npm start
+### 🔐 Authentication & Roles
+- **Admin Dashboard:** Full control over books, users, and system reports.
+- **User Dashboard:** Students can view issued books, check due dates, and manage profiles.
 
-Frontend:
-cd frontend
-npm install
-npm run dev
+### 📖 Core Library Logic
+- **Inventory Management:** Add, update, and track books in real-time.
+- **Issue/Return System:** Seamlessly manage book circulation with automated status updates.
+- **Dynamic Membership:** - Support for **Basic, Premium, and Elite** plans.
+    - Automatic **Active/Expired** status tracking based on dates.
+- **Live Reports:** Detailed admin panel showing total books, active users, and student-wise detailed summaries.
+
+### 🎨 Modern UI
+- Clean, responsive React interfaces.
+- Color-coded status badges (Active/Expired, Clear/Overdue).
+- Modern CSS-in-JS styling for a professional look.
+
+## 🛠️ Tech Stack
+- **Frontend:** React.js, Context API/Hooks, Axios
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB (Mongoose)
+- **Security:** JWT Authentication, Password Hashing
+
+## 📂 Project Structure
+```text
+├── backend/          # Node/Express API
+│   ├── controllers/  # Business logic (Auth, Book, Report)
+│   ├── models/       # Mongoose Schemas (User, Book, Issue)
+│   └── routes/       # API Endpoints
+└── frontend/         # React Application
+    ├── src/
+    │   ├── api/      # Axios configurations
+    │   └── components/ # UI Components 
