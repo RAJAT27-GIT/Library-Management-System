@@ -57,10 +57,7 @@ cd frontend
 npm install
 npm run dev
 📊 Roadmap & Future Enhancements
-[x] Membership Management
-
-[x] Admin Reporting
-
-[ ] Email notifications for overdue books
-
-[ ] Integration of a PDF generator for reports
+- Membership Management
+- Admin Reporting
+- Email notifications for overdue books
+- Integration of a PDF generator for reports
