@@ -35,4 +35,32 @@ A full-stack Library Management application built to streamline book inventory, 
 └── frontend/         # React Application
     ├── src/
     │   ├── api/      # Axios configurations
-    │   └── components/ # UI Components 
+    │   └── components/ # UI Components
+
+
+⚙️ Installation & Setup
+Clone the repository:
+
+Bash
+git clone <your-repo-link>
+Setup Backend:
+
+Bash
+cd backend
+npm install
+# Create a .env file with PORT and MONGO_URI
+npm start
+Setup Frontend:
+
+Bash
+cd frontend
+npm install
+npm run dev
+📊 Roadmap & Future Enhancements
+[x] Membership Management
+
+[x] Admin Reporting
+
+[ ] Email notifications for overdue books
+
+[ ] Integration of a PDF generator for reports
