@@ -1,49 +1,45 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User");
+const Issue = require("../models/Issue"); 
+// Controller se functions import ho rahe hain
+const { userLogin, userSignup, getUserProfile, forgotPassword } = require("../controllers/authController");
 
-//Add User
-router.post("/", async (req, res) => {
+// --- AUTH ROUTES ---
+router.post("/signup", userSignup); 
+router.post("/login", userLogin);   
+router.post("/forgot-password", forgotPassword);
+
+// --- FINE CLEAR ROUTE ---
+router.post("/clear-fine/:id", async (req, res, next) => {
   try {
-    const user = new User(req.body);
-    await user.save();
-    res.json(user);
+    await User.findByIdAndUpdate(req.params.id, { totalFine: 0 });
+    res.json({ message: "Fine cleared successfully" });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    next(err); 
   }
 });
 
-//Get All Users
-router.get("/", async (req, res) => {
+// --- 🟢 USER PROFILE ROUTE ---
+// Bhai, yahan Controller wala function use karo taaki 'next' sahi se kaam kare
+router.get("/profile/:id", getUserProfile); 
+
+// --- MANAGEMENT ROUTES ---
+router.get("/", async (req, res, next) => {
   try {
-    const users = await User.find();
+    const users = await User.find().select("-password");
     res.json(users);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (err) { 
+    next(err); 
   }
 });
 
-//Update User (NEW)
-router.put("/:id", async (req, res) => {
-  try {
-    const updated = await User.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true }
-    );
-    res.json(updated);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
-
-//Delete User (NEW)
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async (req, res, next) => {
   try {
     await User.findByIdAndDelete(req.params.id);
     res.json({ message: "User Deleted Successfully" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  } catch (err) { 
+    next(err); 
   }
 });
 
